@@ -1,0 +1,80 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Drawing Area</title>
+<!-- You can add your style here rather than in an external style sheet. -->
+<style>
+	canvas {
+	    border:5px solid #d3d3d3;
+	    background-color: #f1f1f1;
+	    display: block;
+	}
+</style>
+</head>
+<body>
+    <!-- DO NOT MODIFY THIS HTML -->
+    <canvas id = "myCanvas" width = "350" height = "500" ></canvas>
+    <input type = "color" id = "picker"/>
+
+	<script type="text/javascript">
+		let canvas = document.querySelector("#myCanvas");
+		let ctx = canvas.getContext("2d");
+		let colorChoice = document.querySelector("#picker");
+		let paint = true;
+
+
+		// the listener function on load allows the canvas to resize to 80% no matter what the browser size is
+		window.addEventListener("load",function(){
+			canvas.height = window.innerHeight * .80;
+			canvas.width = window.innerWidth * .80;
+
+			// allows automatic drawing when the mouse moves over the canvas
+			canvas.addEventListener("mousemove",function(e){
+				if (paint == true){
+					ctx.beginPath();
+					ctx.arc(e.clientX,e.clientY,10,e.clientX,e.clientY,2*Math.PI);  // makes a circle whenever the pointer is on the canvas. 2* Math.PI completes the full circle arc. e.clientX and e.clientY are the coordinates of the pointer on canvas
+					ctx.fillStyle = colorChoice;
+					ctx.fill();
+				}
+			});
+
+			// listens for whatever color is selected in the picker and sets that color to be the fillstyle
+			picker.addEventListener("input", function(e){
+				colorChoice = this.value;
+			});
+
+
+
+
+			//e.which gives the keycode for a keyboard key that is pressed. I looked up event keycodes from keycode.info
+			window.addEventListener("keydown",function(e){
+
+				if (e.which == 66){  //  66 is code for when b is pressed
+					ctx.fillStyle = "blue";
+				}
+				if (e.which == 82){   // 82 is code for when r is pressed
+					ctx.fillStyle = "red";
+				}
+				if (e.which == 71){  // 71 is key code for when g is pressed
+					ctx.fillStyle = "green";
+				}
+				if (e.which == 89){    // 89 is key code for when y key is pressed
+					ctx.fillStyle = "yellow";
+				}
+				if (e.which == 32){
+					ctx.clearRect(0,0,canvas.width,canvas.height);  // clears the entire canvas when the space key is pressed
+				}
+				if (e.which == 38){  // 38 is key code for when the up arrow is pressed
+					paint = false;
+				}
+				if (e.which == 40){ // 40 is key code for when the down arrow is pressed
+					paint = true;
+				}
+			})
+		});
+
+	</script>
+</body>
+</html>
